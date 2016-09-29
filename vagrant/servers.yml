@@ -1,0 +1,11 @@
+---
+
+## Server Inventory to be used with local VM using Vagrant.
+
+- name: kube-master
+  ip: 172.32.120.13
+  box: centos/7
+
+- name: kube-node-1
+  ip: 172.32.120.14
+  box: centos/7
