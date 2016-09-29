@@ -1,0 +1,6 @@
+---
+- name: Generic | Install Docker
+  package:
+    name: "{{ docker_package_name }}"
+    state: latest
+  when: not is_atomic

@@ -1,0 +1,8 @@
+- name: Set pyyaml package name
+  set_fact:
+    pyyaml_name: python-yaml
+
+- name: Install PyYAML for non-debian
+  package:
+    name: "{{ pyyaml_name }}"
+    state: latest

@@ -1,0 +1,39 @@
+---
+- name: Create system etcd user
+  user:
+    name=etcd
+    comment="Etcd user"
+    shell=/sbin/nologin
+    state=present
+    system=yes
+    groups=etcd
+  when: etcd_source_type == "github-release"
+
+- name: Ensure /var/lib/etcd exists
+  file:
+    path=/var/lib/etcd
+    recurse=yes
+    state=directory
+    owner=etcd
+  when: etcd_source_type == "github-release"
+
+- name: Write etcd systemd unit file
+  copy: src=etcd.service dest=/etc/systemd/system
+  notify:
+    - reload systemd
+  when: etcd_source_type == "github-release"
+
+- name: Install etcd via package manager
+  package:
+    name=etcd
+    state=latest
+  when: etcd_source_type == "package-manager"
+
+- name: Set the etcd_modified fact to true
+  set_fact:
+    etcd_modified: true
+  when: etcd_source_type == "package-manager"
+
+- name: Install etcd from github
+  include: etcd-install-github-release.yml
+  when: etcd_source_type == "github-release"
